@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TriggerObject : MonoBehaviour {
     public bool isEnter = false;
+    public float moveLength;
 	Collider2D player;
 	void Start(){
 		player = GameObject.Find ("Sprite").GetComponent<Collider2D> ();

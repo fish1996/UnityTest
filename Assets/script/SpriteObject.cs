@@ -15,7 +15,9 @@ public class SpriteObject : MonoBehaviour {
     private bool bInRevivePos = false;
     private bool bJumping = false;
     private bool bRemoveGravity = false;
+    private bool bInWater = false;
     private Rigidbody2D rigidBody;
+
     private Vector2 v0_right = new Vector2(0.3f, 0.0f);
     private Vector2 v0_left = new Vector2(-0.3f, 0.0f);
     private Vector2 v0_back = new Vector2(0.0f, 0.2f);
@@ -39,6 +41,7 @@ public class SpriteObject : MonoBehaviour {
 
     private enum Dir : int { LEFT,RIGHT,FRONT,BACK};
     private SpriteRenderer spriteRO;
+    private float beginy;
 
     void Start () {
         sprites = Resources.LoadAll<Sprite>("image/people");
@@ -271,23 +274,40 @@ public class SpriteObject : MonoBehaviour {
 		foreach (TriggerObject triggerObj in triggerList) {
 			if (triggerObj.isEnter && !bRemoveGravity) {
 				bRemoveGravity = true;
-				Debug.Log ("RemoveGravity");
+                if(triggerObj == water) {
+                    GameObject m_water = GameObject.Find("Waterfall");
+                    beginy = m_water.transform.localScale.y;
+                    bInWater = true;
+                }
 				currentTriggerObj = triggerObj;
 				rigidBody.gravityScale = 0;
 				break;
 			}
 		}
 		if (currentTriggerObj && !currentTriggerObj.isEnter) {
-			bRemoveGravity = false;
-			currentTriggerObj = null;
-			rigidBody.gravityScale = 1;
+            if (currentTriggerObj != water) {
+                bRemoveGravity = false;
+                currentTriggerObj = null;
+                rigidBody.gravityScale = 1;
+            }
 		}
 			
-		if (water.isEnter) {
+		if (bInWater) {
 			GameObject m_water = GameObject.Find ("Waterfall");
 			Vector3 scale = m_water.transform.localScale;
-			m_water.transform.localScale = new Vector3 (scale.x, scale.y += 0.1f, scale.z);
-			MoveBack (new Vector2(0,0.8f));
+			m_water.transform.localScale = new Vector3 (scale.x, scale.y += 0.15f, scale.z);
+			MoveBack (new Vector2(0,0.1f));
+            Debug.Log(m_water.transform.localScale.y);
+            Debug.Log(beginy);
+            Debug.Log(water.moveLength);
+            if (m_water.transform.localScale.y >= water.moveLength + beginy) {
+                bRemoveGravity = false;
+                currentTriggerObj = null;
+                rigidBody.gravityScale = 1;
+                MoveBack(new Vector2(0, 0.1f));
+                m_water.transform.localScale = new Vector3(m_water.transform.localScale.x, beginy, m_water.transform.localScale.z);
+                bInWater = false;
+            }
 		}
 	}
 
