@@ -16,14 +16,19 @@ public class SpriteObject : MonoBehaviour {
     private bool bJumping = false;
     private bool bRemoveGravity = false;
     private bool bInWater = false;
+	private bool bKeyDown = false;
+	private bool bDelayRemoveGravity = false;
+
+
     private Rigidbody2D rigidBody;
 
     private Vector2 v0_right = new Vector2(0.3f, 0.0f);
     private Vector2 v0_left = new Vector2(-0.3f, 0.0f);
-    private Vector2 v0_back = new Vector2(0.0f, 0.2f);
-    private Vector2 v0_front = new Vector2(0.0f, 3.0f);
+    private Vector2 v0_back = new Vector2(0.0f, 0.3f);
+	public Vector2 v0_front;
     
-    
+
+
 	private TriggerObject ladder;
 	private TriggerObject water;
 	private List<TriggerObject> triggerList = new List<TriggerObject>();
@@ -107,27 +112,32 @@ public class SpriteObject : MonoBehaviour {
 
     private void KeyControl() {
         // 鼠标按下
-        if (!bJumping) {
-            if (Input.GetKeyDown(KeyCode.W)) {
-                dir = Dir.BACK;
-                updateIndex((int)Constant.BACK_INDEX, 1);
-                Vector2 vel = rigidBody.velocity;
-                rigidBody.velocity = new Vector2(0, vel.y);
-            }
-            if (Input.GetKeyDown(KeyCode.S)) {
-                dir = Dir.FRONT;
-                updateIndex((int)Constant.FRONT_INDEX, 1);
-                Vector2 vel = rigidBody.velocity;
-                rigidBody.velocity = new Vector2(0, vel.y);
-            }
-            if (Input.GetKeyDown(KeyCode.A)) {
-                dir = Dir.LEFT;
-                updateIndex((int)Constant.LEFT_INDEX, 1);
-            }
-            if (Input.GetKeyDown(KeyCode.D)) {
-                dir = Dir.RIGHT;
-                updateIndex((int)Constant.RIGHT_INDEX, 1);
-            }
+
+        if (Input.GetKeyDown(KeyCode.W)) {
+			bKeyDown = true;
+            dir = Dir.BACK;
+            updateIndex((int)Constant.BACK_INDEX, 1);
+            Vector2 vel = rigidBody.velocity;
+            rigidBody.velocity = new Vector2(0, vel.y);
+        }
+        if (Input.GetKeyDown(KeyCode.S)) {
+			bKeyDown = true;
+            dir = Dir.FRONT;
+            updateIndex((int)Constant.FRONT_INDEX, 1);
+            Vector2 vel = rigidBody.velocity;
+            rigidBody.velocity = new Vector2(0, vel.y);
+        }
+        if (Input.GetKeyDown(KeyCode.A)) {
+	 		bKeyDown = true;
+            dir = Dir.LEFT;
+            updateIndex((int)Constant.LEFT_INDEX, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.D)) {
+			bKeyDown = true;
+            dir = Dir.RIGHT;
+            updateIndex((int)Constant.RIGHT_INDEX, 1);
+        }
+		if(!bJumping){
             if (Input.GetKeyDown(KeyCode.Space)) {
                 bJumping = true;
                 Vector2 vel = rigidBody.velocity;
@@ -140,6 +150,7 @@ public class SpriteObject : MonoBehaviour {
         }
         // 鼠标抬起
         if (Input.GetKeyUp(KeyCode.W)) {
+			bKeyDown = false;
             if (!bJumping) {
                 updateIndex((int)Constant.BACK_INDEX, 2);
             }
@@ -148,6 +159,7 @@ public class SpriteObject : MonoBehaviour {
             }
         }
         if (Input.GetKeyUp(KeyCode.S)) {
+			bKeyDown = false;
             if (!bJumping) {
                 updateIndex((int)Constant.FRONT_INDEX, 2);
             }
@@ -157,6 +169,7 @@ public class SpriteObject : MonoBehaviour {
         }
 
         if (Input.GetKeyUp(KeyCode.A)) {
+			bKeyDown = false;
             if (!bJumping) {
                 updateIndex((int)Constant.LEFT_INDEX, 2);
             }
@@ -165,6 +178,7 @@ public class SpriteObject : MonoBehaviour {
             }
         }
         if (Input.GetKeyUp(KeyCode.D)) {
+			bKeyDown = false;
             if (!bJumping) {
                 updateIndex((int)Constant.RIGHT_INDEX, 2);
             }
@@ -274,32 +288,39 @@ public class SpriteObject : MonoBehaviour {
 		foreach (TriggerObject triggerObj in triggerList) {
 			if (triggerObj.isEnter && !bRemoveGravity) {
 				bRemoveGravity = true;
-                if(triggerObj == water) {
-                    GameObject m_water = GameObject.Find("Waterfall");
-                    beginy = m_water.transform.localScale.y;
-                    bInWater = true;
-                }
-				currentTriggerObj = triggerObj;
-				rigidBody.gravityScale = 0;
+				if (triggerObj.type == TriggerObject.TriggerType.WaterFall) {
+					GameObject m_water = GameObject.Find ("Waterfall");
+					beginy = m_water.transform.localScale.y;
+					bInWater = true;
+					currentTriggerObj = triggerObj;
+					rigidBody.gravityScale = 0;
+				} 
+				else if (triggerObj.type == TriggerObject.TriggerType.Ladder) {
+					if (bJumping) {
+						bDelayRemoveGravity = true;
+						currentTriggerObj = triggerObj;
+					} 
+					else {
+						currentTriggerObj = triggerObj;
+						rigidBody.gravityScale = 0;
+					}
+				}
 				break;
 			}
 		}
 		if (currentTriggerObj && !currentTriggerObj.isEnter) {
-            if (currentTriggerObj != water) {
+			if (currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
                 bRemoveGravity = false;
                 currentTriggerObj = null;
                 rigidBody.gravityScale = 1;
             }
 		}
-			
+
 		if (bInWater) {
 			GameObject m_water = GameObject.Find ("Waterfall");
 			Vector3 scale = m_water.transform.localScale;
 			m_water.transform.localScale = new Vector3 (scale.x, scale.y += 0.15f, scale.z);
 			MoveBack (new Vector2(0,0.1f));
-            Debug.Log(m_water.transform.localScale.y);
-            Debug.Log(beginy);
-            Debug.Log(water.moveLength);
             if (m_water.transform.localScale.y >= water.moveLength + beginy) {
                 bRemoveGravity = false;
                 currentTriggerObj = null;
@@ -318,12 +339,17 @@ public class SpriteObject : MonoBehaviour {
 
 
         if (bJumping && rigidBody.velocity.y == 0) {
+			if (bDelayRemoveGravity) {
+				rigidBody.gravityScale = 0;
+				bDelayRemoveGravity = false;
+			}
             if (bMoving == 1) {
                 ResetJumpInitState();
             }
             bJumping = false;
         }
-        if (bJumping) {
+        if (bJumping && bKeyDown) {
+			
             if (dir == Dir.LEFT) {
                 MoveLeft();
             }

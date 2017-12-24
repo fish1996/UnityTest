@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerObject : MonoBehaviour {
+	public enum TriggerType {
+		WaterFall,
+		Ladder,
+	};
+	public TriggerType type;
     public bool isEnter = false;
-    public float moveLength;
+	public float moveLength;
 	Collider2D player;
 	void Start(){
 		player = GameObject.Find ("Sprite").GetComponent<Collider2D> ();
