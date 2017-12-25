@@ -15,10 +15,10 @@ public class SpriteObject : MonoBehaviour {
     private bool bInRevivePos = false;
     private bool bJumping = false;
     private bool bRemoveGravity = false;
-    private bool bInWater = false;
 	private bool bKeyDown = false;
 	private bool bDelayRemoveGravity = false;
 
+    private Region specialregion = Region.NORMAL;
 
     private Rigidbody2D rigidBody;
 
@@ -31,7 +31,9 @@ public class SpriteObject : MonoBehaviour {
 
 	private TriggerObject ladder;
 	private TriggerObject water;
-	private List<TriggerObject> triggerList = new List<TriggerObject>();
+    private TriggerObject dieregion;
+
+    private List<TriggerObject> triggerList = new List<TriggerObject>();
 	private TriggerObject currentTriggerObj;
     private Vector2 revivePos = new Vector2(-6.24492f, 3.215286f);
     private Vector2[] revivePosTbl = {
@@ -45,6 +47,7 @@ public class SpriteObject : MonoBehaviour {
     };
 
     private enum Dir : int { LEFT,RIGHT,FRONT,BACK};
+    private enum Region : int { WATER,LADDER,NORMAL};
     private SpriteRenderer spriteRO;
     private float beginy;
 
@@ -61,13 +64,34 @@ public class SpriteObject : MonoBehaviour {
 
 		water = GameObject.Find ("Waterfall").GetComponent<TriggerObject> ();
 		ladder = GameObject.Find("Decorations").GetComponent<TriggerObject>();
-		triggerList.Add (water);
+        dieregion = GameObject.Find("DieRegion").GetComponent<TriggerObject>();
+        triggerList.Add (water);
 		triggerList.Add (ladder);
+        triggerList.Add (dieregion);
 		currentTriggerObj = null;
 
         rigidBody.drag = 0;
         rigidBody.angularDrag = 0;
        
+    }
+
+    private void OnEnterJump() {
+        bJumping = true;
+        SetJumpInitState();
+    }
+
+    private void OnEnterJump(Vector2 speed) {
+        bJumping = true;
+        
+        SetJumpInitState();
+        rigidBody.velocity = speed;
+    }
+
+    private bool CanJump() {
+        if (specialregion == Region.LADDER || specialregion == Region.WATER) {
+            return false;
+        }
+        return true;
     }
 
     private void updateIndex(int i,int move) {
@@ -139,10 +163,9 @@ public class SpriteObject : MonoBehaviour {
         }
 		if(!bJumping){
             if (Input.GetKeyDown(KeyCode.Space)) {
-                bJumping = true;
-                Vector2 vel = rigidBody.velocity;
-                SetJumpInitState();
-                rigidBody.velocity = new Vector2(vel.x, v0_front.y);
+                if (CanJump()) {
+                    OnEnterJump(v0_front);
+                }
             }
             if (Input.GetKeyDown(KeyCode.Q)) {
                 Die();
@@ -188,13 +211,15 @@ public class SpriteObject : MonoBehaviour {
         }
     }
 
-    void Die() {
+    private void Die() {
+        Debug.Log("Die here");
         bJumping = true;
         bMoving = 0;
         dir = Dir.FRONT;
         
         index = (int)Constant.FRONT_INDEX + 1;
         spriteRO.transform.localPosition =  revivePos;
+        transform.localPosition = revivePos;
     }
 
     bool Equal(Vector2 v1,Vector2 v2) {
@@ -210,6 +235,7 @@ public class SpriteObject : MonoBehaviour {
     }
 
     void Update () {
+        CheckWithTrigger();
         Vector2 pos = spriteRO.transform.localPosition;
         foreach(Vector2 rpos in revivePosTbl) {
             if (Equal(rpos,pos)) {
@@ -284,19 +310,21 @@ public class SpriteObject : MonoBehaviour {
     }
 
 	void CheckWithTrigger(){
-
 		foreach (TriggerObject triggerObj in triggerList) {
 			if (triggerObj.isEnter && !bRemoveGravity) {
 				bRemoveGravity = true;
 				if (triggerObj.type == TriggerObject.TriggerType.WaterFall) {
-					GameObject m_water = GameObject.Find ("Waterfall");
-					beginy = m_water.transform.localScale.y;
-					bInWater = true;
+                    rigidBody.gravityScale = 0;
+                    rigidBody.velocity = Vector2.zero;
+                    GameObject m_water = GameObject.Find ("Waterfall");
+                    triggerObj.isStart = true;
+                    specialregion = Region.WATER;
 					currentTriggerObj = triggerObj;
-					rigidBody.gravityScale = 0;
+					
 				} 
 				else if (triggerObj.type == TriggerObject.TriggerType.Ladder) {
-					if (bJumping) {
+                    specialregion = Region.LADDER;
+                    if (bJumping) {
 						bDelayRemoveGravity = true;
 						currentTriggerObj = triggerObj;
 					} 
@@ -305,38 +333,44 @@ public class SpriteObject : MonoBehaviour {
 						rigidBody.gravityScale = 0;
 					}
 				}
-				break;
+                else if (triggerObj.type == TriggerObject.TriggerType.DieRegion) {
+                    Die();
+                }
+                break;
 			}
 		}
 		if (currentTriggerObj && !currentTriggerObj.isEnter) {
-			if (currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
-                bRemoveGravity = false;
-                currentTriggerObj = null;
-                rigidBody.gravityScale = 1;
+            if(currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+                OnEnterJump();
+                Debug.Log("here");
             }
-		}
-
-		if (bInWater) {
-			GameObject m_water = GameObject.Find ("Waterfall");
-			Vector3 scale = m_water.transform.localScale;
-			m_water.transform.localScale = new Vector3 (scale.x, scale.y += 0.15f, scale.z);
-			MoveBack (new Vector2(0,0.1f));
-            if (m_water.transform.localScale.y >= water.moveLength + beginy) {
-                bRemoveGravity = false;
-                currentTriggerObj = null;
-                rigidBody.gravityScale = 1;
-                MoveBack(new Vector2(0, 0.1f));
-                m_water.transform.localScale = new Vector3(m_water.transform.localScale.x, beginy, m_water.transform.localScale.z);
-                bInWater = false;
-            }
+            specialregion = Region.NORMAL;
+            bRemoveGravity = false;
+            currentTriggerObj = null;
+            rigidBody.gravityScale = 1;
 		}
 	}
-
+    private void UpdateTrigger() {
+        foreach(TriggerObject triggerObj in triggerList) {
+            if (triggerObj.isStart) {
+                GameObject m_water = GameObject.Find("Waterfall");
+                Vector3 scale = m_water.transform.localScale;
+                m_water.transform.localScale = new Vector3(scale.x, scale.y += 0.15f, scale.z);
+                if (specialregion == Region.WATER) {
+                    MoveBack(new Vector2(0, 0.1f));
+                }
+                if (m_water.transform.localScale.y >= water.moveLength + triggerObj.beginy) {
+                    triggerObj.isStart = false;
+                    m_water.transform.localScale = new Vector3(m_water.transform.localScale.x, triggerObj.beginy, m_water.transform.localScale.z);
+                }
+            }
+        }
+    }
     void FixedUpdate() {
 
         UpdateView();
-		CheckWithTrigger();
 
+        UpdateTrigger();
 
         if (bJumping && rigidBody.velocity.y == 0) {
 			if (bDelayRemoveGravity) {
@@ -349,14 +383,12 @@ public class SpriteObject : MonoBehaviour {
             bJumping = false;
         }
         if (bJumping && bKeyDown) {
-			
             if (dir == Dir.LEFT) {
                 MoveLeft();
             }
             else if (dir == Dir.RIGHT){
                 MoveRight();
-            }
-            
+            }  
         }
         else if(bMoving == 1 && !bJumping) {
             if(dir == Dir.FRONT) {
