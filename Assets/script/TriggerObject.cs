@@ -7,6 +7,7 @@ public class TriggerObject : MonoBehaviour {
 		WaterFall,
 		Ladder,
         DieRegion,
+        Ground,
 	};
 	public TriggerType type;
     public bool isEnter = false;
