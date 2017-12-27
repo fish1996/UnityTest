@@ -14,22 +14,18 @@ public class TriggerObject : MonoBehaviour {
 	public float moveLength;
     public bool isStart = false;
     public float beginy;
-	Collider2D player;
-	void Start(){
-		player = GameObject.Find ("Sprite").GetComponent<Collider2D> ();
-	}
+    public List<MySprite> playerList = new List<MySprite>();
+
     public float getBottom() {
         return transform.position.y - transform.localScale.y/2;
     }
     private void OnTriggerEnter2D(Collider2D collision) {
-		if (collision == player) {
-			isEnter = true;
-		}
+		isEnter = true;
+        playerList.Add(collision.gameObject.GetComponent<MySprite>());
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-		if (collision == player) {
-			isEnter = false;
-		}
+        isEnter = false;
+        playerList.Remove(collision.gameObject.GetComponent<MySprite>());
     }
 }
