@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SpriteObject : MonoBehaviour {
-
-    private List<MySprite> spriteList = new List<MySprite>();
+	private List<MySprite> spriteList;
     MySprite mainSprite;
+	private Data data = Data.getInstance();
     private List<AnimationObject> animationList = new List<AnimationObject>();
     private Prefab prefab = Prefab.getInstance();
     private List<TriggerObject> triggerList = new List<TriggerObject>();
-    
+	private Rpc rpc = Rpc.getInstance ();
 
     void Awake() {
 
@@ -24,9 +25,25 @@ public class SpriteObject : MonoBehaviour {
             TriggerObject obj = GameObject.Find(path).GetComponent<TriggerObject>();
             triggerList.Add(obj);
         }
-        mainSprite = GameObject.Find("Sprite").GetComponent<MySprite>();
-        spriteList.Add(mainSprite);
+
+		// init sprite list
+		spriteList = new List<MySprite>();
+		MySprite sprite1 = GameObject.Find("Sprite1").GetComponent<MySprite>();
+		MySprite sprite2 = GameObject.Find("Sprite2").GetComponent<MySprite>(); 
+        spriteList.Add(sprite1);
+		spriteList.Add(sprite2);
+		int id = data.playerId;
+		mainSprite = GameObject.Find("Sprite" + id).GetComponent<MySprite>();
+		mainSprite.SetMainPlayer ();
+
+		// init id
+		rpc.SetMainSpriteId(mainSprite.Id);
+		rpc.initPlayerList ();
+		rpc.SetStatus ("Id", mainSprite.Id);
     }
+
+
+
     private void KeyControl() {
         // 鼠标按下
         if (Input.GetKeyDown(KeyCode.W)) {
@@ -62,11 +79,7 @@ public class SpriteObject : MonoBehaviour {
             mainSprite.OnKeyUp_D();
         }
     }
-
-
-
-
-
+		
     bool Equal(float v1, float v2) {
         float eps = 0.5f;
         return v1 - v2 < eps && v1 - v2 > -eps;
@@ -111,7 +124,7 @@ public class SpriteObject : MonoBehaviour {
         foreach (MySprite sprite in spriteList) {
             if (sprite.currentTriggerObj) {
                 bool flag = false;
-                Debug.Log("Count = " + sprite.currentTriggerObj.playerList.Count);
+                
                 foreach (MySprite player in sprite.currentTriggerObj.playerList) {
                     if(player == sprite) {
                         flag = true;
@@ -135,7 +148,7 @@ public class SpriteObject : MonoBehaviour {
 
 
     private void UpdateSprite() {
-        for(int i=0;i<spriteList.Count;i++) {
+        for(int i = 0;i < spriteList.Count;i++) {
             spriteList[i].UpdateSprite();
         }
     }
@@ -155,6 +168,7 @@ public class SpriteObject : MonoBehaviour {
                 foreach(MySprite player in triggerObj.playerList) {
                     if (player.specialregion == Region.WATER) {
                         player.MoveBack(new Vector2(0, 0.1f));
+						player.UpdateCamera ();
                     }
                 }
                 if (m_water.transform.localScale.y >= triggerObj.moveLength + triggerObj.beginy) {

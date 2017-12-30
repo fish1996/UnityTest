@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\script\MySprite.cs">
+    <Files>
+      <File FileName="Assets\script\SpriteObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\script\MySprite.cs" Line="285" Column="91" />
+      <File FileName="Assets\script\AnimationObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\script\Constant.cs" Line="1" Column="1" />
+      <File FileName="Assets\script\TriggerObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\script\Prefab.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

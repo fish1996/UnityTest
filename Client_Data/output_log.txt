@@ -1,221 +1,84 @@
-Initialize engine version: 5.5.4p4 (e92bef0ab5a4)
+Initialize engine version: 5.6.0f3 (497a0f351392)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce 940M (ID=0x1347)
+    Renderer: NVIDIA GeForce GTX 1070 (ID=0x1b81)
     Vendor:   NVIDIA
-    VRAM:     2019 MB
-    Driver:   20.19.15.4549
+    VRAM:     3072 MB
+    Driver:   23.21.13.8813
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\miaomiao\UnityTest\Client_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
-Loading D:\miaomiao\UnityTest\Client_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.082 seconds
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: D:\miaomiao\UnityTest\Client_Data\Managed\System.dll (this message is harmless)
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.013 seconds
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.564280 ms
-Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1794 -> priority: 1 
-OnEnterJump
+UnloadTime: 0.746995 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 1f28 -> priority: 1 
+  Thread -> id: 2448 -> priority: 1 
+  Thread -> id: 1514 -> priority: 1 
+  Thread -> id: 179c -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.000845 ms
+
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 462.
+Total: 0.129779 ms (FindLiveObjects: 0.012773 ms CreateObjectMapping: 0.010474 ms MarkObjects: 0.098611 ms  DeleteObjects: 0.007919 ms)
+
+Initialize engine version: 5.6.0f3 (497a0f351392)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 1070 (ID=0x1b81)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   23.21.13.8813
+Begin MonoManager ReloadAssembly
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading H:\homework\UnityTest\Client_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.013 seconds
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: H:\homework\UnityTest\Client_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.722470 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 23b8 -> priority: 1 
+  Thread -> id: 1950 -> priority: 1 
+  Thread -> id: 23d4 -> priority: 1 
+  Thread -> id: 4e4 -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.979130 ms
+
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 462.
+Total: 0.122625 ms (FindLiveObjects: 0.012007 ms CreateObjectMapping: 0.010474 ms MarkObjects: 0.092224 ms  DeleteObjects: 0.007919 ms)
+
+Enter 1
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-OnLeaveJump
+ladder
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Die
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnEnterJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-OnLeaveJump
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-collision
+Leave 0
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
