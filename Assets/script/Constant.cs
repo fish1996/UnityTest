@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum Dir : int { LEFT, RIGHT, FRONT, BACK };
 public enum Region : int { WATER, LADDER, NORMAL };
+
 public class Value {
     static public Vector2 v0_right = new Vector2(0.3f, 0.0f);
     static public Vector2 v0_left = new Vector2(-0.3f, 0.0f);

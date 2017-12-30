@@ -21,11 +21,15 @@ public class TriggerObject : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D collision) {
 		isEnter = true;
+        
         playerList.Add(collision.gameObject.GetComponent<MySprite>());
+        Debug.Log("Enter " + playerList.Count);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         isEnter = false;
+        
         playerList.Remove(collision.gameObject.GetComponent<MySprite>());
+        Debug.Log("Leave " + playerList.Count);
     }
 }

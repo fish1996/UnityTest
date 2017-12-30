@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class SpriteObject : MonoBehaviour {
 
-    private MySprite mainSprite = new MySprite();
     private List<MySprite> spriteList = new List<MySprite>();
-
+    MySprite mainSprite;
     private List<AnimationObject> animationList = new List<AnimationObject>();
     private Prefab prefab = Prefab.getInstance();
     private List<TriggerObject> triggerList = new List<TriggerObject>();
@@ -25,7 +24,7 @@ public class SpriteObject : MonoBehaviour {
             TriggerObject obj = GameObject.Find(path).GetComponent<TriggerObject>();
             triggerList.Add(obj);
         }
-        mainSprite.initialize("Sprite");
+        mainSprite = GameObject.Find("Sprite").GetComponent<MySprite>();
         spriteList.Add(mainSprite);
     }
     private void KeyControl() {
@@ -70,7 +69,6 @@ public class SpriteObject : MonoBehaviour {
 
     bool Equal(float v1, float v2) {
         float eps = 0.5f;
-        Debug.Log(v1 - v2);
         return v1 - v2 < eps && v1 - v2 > -eps;
     }
 
@@ -101,16 +99,29 @@ public class SpriteObject : MonoBehaviour {
 
 
     void CheckWithTrigger() {
-        foreach (TriggerObject triggerObj in triggerList) {
+        for(int i = 0;i < triggerList.Count;i++) {
+            TriggerObject triggerObj = triggerList[i];
             if (triggerObj.isEnter) {
                 foreach (MySprite player in triggerObj.playerList) {
-                    player.CheckWithEnterTrigger(triggerObj);
+                    player.CheckWithEnterTrigger(ref triggerObj);
                 }
             }
         }
-
-        foreach (MySprite player in spriteList) {
-            player.CheckWithLeaveTrigger();
+        
+        foreach (MySprite sprite in spriteList) {
+            if (sprite.currentTriggerObj) {
+                bool flag = false;
+                Debug.Log("Count = " + sprite.currentTriggerObj.playerList.Count);
+                foreach (MySprite player in sprite.currentTriggerObj.playerList) {
+                    if(player == sprite) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    sprite.CheckWithLeaveTrigger();
+                }
+            }
         }
 
     }
@@ -124,8 +135,8 @@ public class SpriteObject : MonoBehaviour {
 
 
     private void UpdateSprite() {
-        foreach (MySprite sprite in spriteList) {
-            sprite.UpdateSprite();
+        for(int i=0;i<spriteList.Count;i++) {
+            spriteList[i].UpdateSprite();
         }
     }
 

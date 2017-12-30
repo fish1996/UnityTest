@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MySprite : MonoBehaviour {
+public class MySprite : MonoBehaviour{
     public Sprite[] sprites;
     public int index = 1; // 当前指向的精灵
     public const int reviveNum = 1;
@@ -14,9 +14,10 @@ public class MySprite : MonoBehaviour {
     public bool bDelayRemoveGravity = false;
     public Region specialregion = Region.NORMAL;
     public Vector2 revivePos = new Vector2(-6.24492f, 3.215286f);
-    private new GameObject camera;
+    private GameObject maincamera;
     public bool bKeyDown = false;
     public TriggerObject currentTriggerObj;
+
     public enum Constant : int {
         LEFT_INDEX = 12,
         RIGHT_INDEX = 24,
@@ -26,13 +27,11 @@ public class MySprite : MonoBehaviour {
     public SpriteRenderer spriteRO;
     public Rigidbody2D rigidBody;
     public float beginy;
-    public void initialize(string path) {
+    void Awake() {
         sprites = Resources.LoadAll<Sprite>("image/people");
-        spriteRO = GameObject.Find(path).GetComponent<SpriteRenderer>();
-        rigidBody = GameObject.Find(path).GetComponent<Rigidbody2D>();
         rigidBody.drag = 0;
         rigidBody.angularDrag = 0;
-        camera = GameObject.Find("Main Camera");
+        maincamera = GameObject.Find("Main Camera");
         currentTriggerObj = null;
     }
 
@@ -138,7 +137,6 @@ public class MySprite : MonoBehaviour {
     }
 
     public void OnKeyDown_Space() {
-       // bKeyDown = true;
         if (CanJump()) {
             OnEnterJump(Value.v0_front);
         }
@@ -192,7 +190,7 @@ public class MySprite : MonoBehaviour {
 
         index = (int)Constant.FRONT_INDEX + 1;
         spriteRO.transform.localPosition = revivePos;
-        camera.transform.localPosition = new Vector3(revivePos.x, 0, transform.localPosition.z);
+        Camera.main.transform.localPosition = new Vector3(revivePos.x, 0, Camera.main.transform.localPosition.z);
     }
 
     public void CheckLeaveJump() {
@@ -226,30 +224,35 @@ public class MySprite : MonoBehaviour {
     }
 
     public void CheckWithLeaveTrigger() {
-        if (currentTriggerObj && !currentTriggerObj.isEnter) {
-            if (currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
-                OnEnterJump(new Vector2(0, 0.1f));
-            }
-            specialregion = Region.NORMAL;
-            bRemoveGravity = false;
-            currentTriggerObj = null;
-            rigidBody.gravityScale = 1;
+        Debug.Log("leave");
+        if (currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+            OnEnterJump(new Vector2(0, 0.1f));
         }
-    }
+        specialregion = Region.NORMAL;
+        bRemoveGravity = false;
+        currentTriggerObj = null;
+        rigidBody.gravityScale = 1;
 
-    public void CheckWithEnterTrigger(TriggerObject triggerObj) {
+    }
+    
+    public void CheckWithEnterTrigger(ref TriggerObject triggerObj) {
+   
         if (!bRemoveGravity) {
+            Debug.Log("Enter");
             bRemoveGravity = true;
             if (triggerObj.type == TriggerObject.TriggerType.WaterFall) {
+                Debug.Log("waterfall");
                 rigidBody.gravityScale = 0;
                 rigidBody.velocity = Vector2.zero;
                 triggerObj.isStart = true;
                 specialregion = Region.WATER;
                 currentTriggerObj = triggerObj;
-
+               
             }
             else if (triggerObj.type == TriggerObject.TriggerType.Ladder) {
+                Debug.Log("ladder");
                 specialregion = Region.LADDER;
+
                 if (bJumping) {
                     bDelayRemoveGravity = true;
                     currentTriggerObj = triggerObj;
@@ -258,39 +261,40 @@ public class MySprite : MonoBehaviour {
                     currentTriggerObj = triggerObj;
                     rigidBody.gravityScale = 0;
                 }
+
             }
             else if (triggerObj.type == TriggerObject.TriggerType.DieRegion) {
+                Debug.Log("DieRegion");
                 bRemoveGravity = false;
                 Die();
             }
         }
     }
     public void UpdateCamera() {
+
         if (bMoving == 1 && !bJumping) {
             if (dir == Dir.FRONT) {
-                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder
-                    && currentTriggerObj.isEnter) {
-                    if (spriteRO.transform.position.x <= Value.cornerPos_down.y) {
-                        camera.transform.Translate(-Value.v0_back);
+                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+                    if (spriteRO.transform.position.y <= Value.cornerPos_down.y) {
+                        Camera.main.transform.Translate(-Value.v0_back);
                     }
                 }
             }
             else if (dir == Dir.BACK) {
-                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder
-                    && currentTriggerObj.isEnter) {
-                    if (spriteRO.transform.position.x >= Value.cornerPos_up.y) {
-                        camera.transform.Translate(Value.v0_back);
+                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+                    if (spriteRO.transform.position.y >= Value.cornerPos_up.y) {
+                        Camera.main.transform.Translate(Value.v0_back);
                     }
                 }
             }
             else if (dir == Dir.LEFT) {
                 if (spriteRO.transform.position.x <= Value.cornerPos_left.x) {
-                    camera.transform.Translate(Value.v0_left);
+                    Camera.main.transform.Translate(Value.v0_left);
                 }
             }
             else if (dir == Dir.RIGHT) {
                 if (spriteRO.transform.position.x >= Value.cornerPos_right.x) {
-                    camera.transform.Translate(Value.v0_right);
+                    Camera.main.transform.Translate(Value.v0_right);
                 }
             }
         }
@@ -314,6 +318,10 @@ public class MySprite : MonoBehaviour {
                 else if (index == (int)Constant.FRONT_INDEX + 2) {
                     index = (int)Constant.FRONT_INDEX;
                 }
+                
+                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+                    MoveFront();
+                }
             }
             else if (dir == Dir.BACK) {
                 if (index == (int)Constant.BACK_INDEX) {
@@ -321,6 +329,10 @@ public class MySprite : MonoBehaviour {
                 }
                 else if (index == (int)Constant.BACK_INDEX + 2) {
                     index = (int)Constant.BACK_INDEX;
+                }
+
+                if (currentTriggerObj && currentTriggerObj.type == TriggerObject.TriggerType.Ladder) {
+                    MoveBack();
                 }
             }
             else if (dir == Dir.LEFT) {
@@ -347,34 +359,24 @@ public class MySprite : MonoBehaviour {
 
     // 移动
     public void MoveLeft() {
-        Vector3 cornerPos = Camera.main.ViewportToWorldPoint(new Vector3(0.3f, 0, 0));
         spriteRO.transform.Translate(Value.v0_left);
     }
 
     public void MoveRight() {
-        Vector3 cornerPos = Camera.main.ViewportToWorldPoint(new Vector3(0.7f, 0, 0));
         spriteRO.transform.Translate(Value.v0_right);
     }
 
     public void MoveBack(Vector2 speed) {
         Vector2 m_speed = speed;
-        Vector3 cornerPos = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.7f, 0));
         spriteRO.transform.Translate(m_speed);
     }
 
     public void MoveBack() {
-        Vector3 cornerPos = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.7f, 0));
-        if (spriteRO.transform.position.y >= cornerPos.y) {
-            camera.transform.Translate(Value.v0_back);
-        }
         spriteRO.transform.Translate(Value.v0_back);
     }
 
     public void MoveFront() {
-        Vector3 cornerPos = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.4f, 0));
-        if (spriteRO.transform.position.y <= cornerPos.y) {
-            camera.transform.Translate(-Value.v0_back);
-        }
+
         spriteRO.transform.Translate(-Value.v0_back);
     }
 
